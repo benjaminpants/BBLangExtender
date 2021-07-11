@@ -61,7 +61,6 @@ namespace BBLangExtender
                 return;
             }
 
-            UnityEngine.Debug.Log(__instance.GetLocalizedText("TEST_One"));
         }
     }
 }
