@@ -22,6 +22,7 @@ namespace BBLangExtender
         static void Finalizer(LocalizationManager __instance, ref Language language, ref Dictionary<string,string> ___localizedText)
         {
             string moddedfolderpath = Path.Combine(Application.streamingAssetsPath, "Modded", language.ToString());
+            UnityEngine.Debug.Log("Loading Language Extensions...");
             if (Directory.Exists(moddedfolderpath))
             {
                 string[] dirs = Directory.GetFiles(moddedfolderpath, "*.json");
@@ -34,7 +35,7 @@ namespace BBLangExtender
                     LocalizationData localizationData = null;
                     try
                     {
-                        localizationData = JsonUtility.FromJson<LocalizationData>(File.ReadAllText(dirs[i]));
+                        localizationData = JsonUtility.FromJson<LocalizationData>(File.ReadAllText(dirs[i])); //use the base localisation data so if BB+ ever changes it this tool will automatically be up to date.
                     }
                     catch(Exception E)
                     {
@@ -53,14 +54,17 @@ namespace BBLangExtender
                             ___localizedText[localizationData.items[j].key] = localizationData.items[j].value;
                         }
                     }
+                    UnityEngine.Debug.Log("Loaded all data from " + Path.GetFileName(dirs[i]));
                 }
             }
             else
             {
+                UnityEngine.Debug.Log("This is most likely a first time boot with no mods installed!");
+                UnityEngine.Debug.Log("Unsure on what to do? Go to: https://github.com/benjaminpants/BBLangExtender/wiki");
                 Directory.CreateDirectory(moddedfolderpath);
                 return;
             }
-
+            UnityEngine.Debug.Log("All data succesfull loaded!");
         }
     }
 }
